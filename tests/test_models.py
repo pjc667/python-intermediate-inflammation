@@ -4,6 +4,18 @@ import numpy as np
 import numpy.testing as npt
 import os
 
+@pytest.mark.parametrize(
+    "test, expected",
+    [
+        ([ [0, 0], [0, 0], [0, 0] ], [0, 0]),
+        ([ [1, 2], [3, 4], [5, 6] ], [3, 4]),
+    ])
+
+def test_daily_mean(test,expected):
+    """ test means for zeros and positive integers"""
+    from inflammation.models import daily_mean
+    npt.assert_array_equal(daily_mean(np.array(test)),np.array(expected))
+    
 
 def test_daily_mean_zeros():
     """Test that mean function works for an array of zeros."""
@@ -17,6 +29,16 @@ def test_daily_mean_zeros():
     # Need to use Numpy testing functions to compare arrays
     npt.assert_array_equal(daily_mean(test_input), test_result)
 
+def test_daily_min_zeros():
+    """Test daily_min function works for zeros"""
+    from inflammation.models import daily_min
+    test_input = mp.array([[0,0],
+                           [0,0],
+                           [0,0]])
+    test_result = np.array([0,0])
+
+    # still using Numpy testing functions
+    npt.assert_array_equal(daily_min(test_input), test_result)
 
 def test_daily_mean_integers():
     """Test that mean function works for an array of positive integers."""
