@@ -1,8 +1,11 @@
 """Tests for statistics functions within the Model layer."""
-
+import os
+import pytest
 import numpy as np
 import numpy.testing as npt
-import os
+from inflammation.models import load_json
+from inflammation.models import daily_mean
+from inflammation.models import daily_min
 
 @pytest.mark.parametrize(
     "test, expected",
@@ -13,14 +16,13 @@ import os
 
 def test_daily_mean(test,expected):
     """ test means for zeros and positive integers"""
-    from inflammation.models import daily_mean
+
     npt.assert_array_equal(daily_mean(np.array(test)),np.array(expected))
-    
+
 
 def test_daily_mean_zeros():
     """Test that mean function works for an array of zeros."""
-    from inflammation.models import daily_mean
-
+    
     test_input = np.array([[0, 0],
                            [0, 0],
                            [0, 0]])
@@ -31,18 +33,17 @@ def test_daily_mean_zeros():
 
 def test_daily_min_zeros():
     """Test daily_min function works for zeros"""
-    from inflammation.models import daily_min
-    test_input = mp.array([[0,0],
-                           [0,0],
-                           [0,0]])
-    test_result = np.array([0,0])
+    
+    test_input = np.array([[0, 0],
+                           [0, 0],
+                           [0, 0]])
+    test_result = np.array([0, 0])
 
     # still using Numpy testing functions
     npt.assert_array_equal(daily_min(test_input), test_result)
 
 def test_daily_mean_integers():
     """Test that mean function works for an array of positive integers."""
-    from inflammation.models import daily_mean
 
     test_input = np.array([[1, 2],
                            [3, 4],
@@ -53,7 +54,7 @@ def test_daily_mean_integers():
     npt.assert_array_equal(daily_mean(test_input), test_result)
 
 def test_load_from_json(tmpdir):
-    from inflammation.models import load_json
+    
     example_path = os.path.join(tmpdir, 'example.json')
     with open(example_path, 'w') as temp_json_file:
         temp_json_file.write('[{"observations":[1, 2, 3]},{"observations":[4, 5, 6]}]')
